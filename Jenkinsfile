@@ -1,6 +1,5 @@
 pipeline {
   agent any
-  triggers { pollSCM('* * * * *') }
   stages {
     stage('Build Backend') {
       steps {
@@ -14,8 +13,11 @@ pipeline {
     }
     stage('Build Ami') {
       steps {
-        bat(script: 'packer build packer.json', returnStatus: true, returnStdout: true)
+        bat(script: 'packer build packer.json > output.txt', returnStatus: true, returnStdout: true)
       }
     }
+  }
+  triggers {
+    pollSCM('* * * * *')
   }
 }
