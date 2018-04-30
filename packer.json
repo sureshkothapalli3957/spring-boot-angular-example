@@ -1,0 +1,38 @@
+{
+  "builders": [
+    {
+      "type": "amazon-ebs",                     
+      "region": "us-east-2",
+      "source_ami": "ami-31c7f654",
+      "instance_type": "t2.micro",
+      "ssh_username": "ec2-user",
+      "ami_name": "packer {{timestamp}}"
+    }
+  ],
+
+  "provisioners": [
+    {
+        "type": "file",
+        "source": "server/target/demo-0.0.1-SNAPSHOT.jar",
+        "destination": "/tmp/demo.jar"
+      },
+      {
+        "type": "file",
+        "source": "demo.service.txt",
+        "destination": "/tmp/demo.service"
+      },
+    {
+      "type": "shell",
+      "execute_command": "sudo -S sh -c '{{ .Vars }} {{ .Path }}'",
+      "inline": ["yum install -y java-1.8.0-openjdk",
+        "cp /tmp/demo.jar /opt/demo.jar",
+        "cp /tmp/demo.service /etc/systemd/system/demo.service",
+        "systemctl enable demo.service",
+        "systemctl start demo.service",
+        "systemctl status demo.service"
+    ]
+    }
+    
+      
+  ]
+}
