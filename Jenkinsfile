@@ -1,5 +1,10 @@
 pipeline {
-  agent any
+  agent {
+    node {
+      label 'Linux-Agent'
+    }
+
+  }
   stages {
     stage('Build Backend') {
       steps {
