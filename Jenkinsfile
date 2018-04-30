@@ -11,5 +11,10 @@ pipeline {
         archiveArtifacts 'server/target/*.jar'
       }
     }
+    stage('Build Ami') {
+      steps {
+        bat(script: 'packer build packer.json', returnStatus: true, returnStdout: true)
+      }
+    }
   }
 }
