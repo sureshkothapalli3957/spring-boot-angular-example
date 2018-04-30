@@ -17,6 +17,9 @@ pipeline {
       }
     }
   }
+  environment {
+    AWS_SHARED_CREDENTIALS_FILE = 'C:\\Users\\Welcome\\.aws\\credentials'
+  }
   triggers {
     pollSCM('* * * * *')
   }
